@@ -31,6 +31,17 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+portal = [
+    "Authlib>=1.6.5,<2",
+    "google-auth>=2.40,<3",
+    "fastapi>=0.115,<1",
+    "uvicorn>=0.34,<1",
+    "pydantic>=2.7.4,<3",
+]
+portal-dev = [
+    "httpx>=0.28,<1",
+    "mypy>=1.15,<2",
+]
 dev = [
     "ruff>=0.16",
     "pytest>=8.0",
@@ -44,12 +55,14 @@ bedrock = [
 
 [project.scripts]
 tradingagents = "cli.main:app"
+tradingagents-portal = "portal.backend.__main__:main"
 
 [tool.setuptools.dynamic]
 version = {attr = "tradingagents.__version__"}
 
 [tool.setuptools.packages.find]
-include = ["tradingagents*", "cli*"]
+include = ["tradingagents*", "cli*", "portal.backend*", "portal"]
+exclude = ["portal.backend.tests*"]
 
 [tool.setuptools.package-data]
 cli = ["static/*"]
@@ -87,3 +100,14 @@ ignore = ["E501"]
 # Keep multiple aliased names from one module in a single combined import block
 # (e.g. the vendor imports in router.py) instead of one statement per name.
 combine-as-imports = true
+
+[tool.mypy]
+python_version = "3.11"
+files = ["portal/backend"]
+exclude = ["portal/backend/tests"]
+strict = true
+follow_imports = "silent"
+
+[[tool.mypy.overrides]]
+module = ["authlib.*", "google.auth.*", "google.oauth2.*"]
+ignore_missing_imports = true

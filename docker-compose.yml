@@ -1,4 +1,29 @@
 services:
+  portal:
+    build:
+      context: .
+      dockerfile: portal/Dockerfile
+    env_file:
+      - path: .env
+        required: false
+      - path: portal/.env
+        required: false
+    environment:
+      PORTAL_HOST: 0.0.0.0
+      PORTAL_PORT: 8000
+      PORTAL_STATIC_DIR: /app/portal/frontend/dist
+      PORTAL_AUTH_DB: /home/appuser/.tradingagents/portal/auth.sqlite3
+    volumes:
+      - portal_auth:/home/appuser/.tradingagents/portal
+    ports:
+      - "127.0.0.1:${PORTAL_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=10)"]
+      interval: 30s
+      timeout: 15s
+      start_period: 30s
+      retries: 3
+
   tradingagents:
     build: .
     env_file:
@@ -7,6 +32,8 @@ services:
       - ${TRADINGAGENTS_DATA_DIR:-tradingagents_data}:/home/appuser/.tradingagents
     tty: true
     stdin_open: true
+    profiles:
+      - cli
 
   ollama:
     image: ollama/ollama:latest
@@ -32,5 +59,6 @@ services:
       - ollama
 
 volumes:
+  portal_auth:
   tradingagents_data:
   ollama_data:

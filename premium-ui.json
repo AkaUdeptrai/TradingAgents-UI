@@ -1,0 +1,24 @@
+{
+  "profile": "product-admin",
+  "sourceRoots": [
+    "portal/frontend/src"
+  ],
+  "locale": "en",
+  "canonicalMap": "DESIGN.md",
+  "requiredCapabilities": [
+    "Scrollbar"
+  ],
+  "requiredCommands": [
+    "unit",
+    "lint",
+    "build"
+  ],
+  "commands": {
+    "unit": "npm --prefix portal/frontend run test",
+    "lint": "npm --prefix portal/frontend run lint",
+    "build": "npm --prefix portal/frontend run build"
+  },
+  "evidence": {
+    "failurePaths": "portal/frontend/src/Auth.test.tsx"
+  }
+}

@@ -1,0 +1,43 @@
+name: Portal
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  portal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: portal/frontend/package-lock.json
+      - run: pip install -e '.[dev,portal,portal-dev]'
+      - run: npm --prefix portal/frontend ci
+      - run: pytest -q portal/backend/tests
+      - run: ruff check portal && ruff format --check portal && mypy
+      - run: python -m portal.scripts.export_openapi --check
+      - run: npm --prefix portal/frontend run api:check
+      - run: npm --prefix portal/frontend run lint
+      - run: npm --prefix portal/frontend run format:check
+      - run: npm --prefix portal/frontend run test
+      - run: npm --prefix portal/frontend run build
+      - run: docker compose build portal tradingagents
+      - name: Container smoke
+        run: |
+          docker compose up -d --wait portal
+          curl --fail http://127.0.0.1:8000/api/health
+          curl --fail http://127.0.0.1:8000/api/auth/config
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:8000/api/capabilities)" = 401
+          curl --fail http://127.0.0.1:8000/login
+          curl --fail http://127.0.0.1:8000/settings
+          cp .env.example .env
+          docker compose run --rm tradingagents --help
+      - if: always()
+        run: docker compose down
