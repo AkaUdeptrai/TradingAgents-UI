@@ -13,3 +13,12 @@ results
 eval_results
 Dockerfile
 docker-compose.yml
+**/node_modules
+**/dist
+**/.venv
+.pytest_cache
+.ruff_cache
+.mypy_cache
+reports
+**/*.sqlite3
+**/*.sqlite3-*

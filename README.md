@@ -148,7 +148,7 @@ cp .env.example .env  # add your API keys
 docker compose run --rm tradingagents
 ```
 
-After updating the repository, rebuild the image with `docker compose build`.
+After updating the repository, rebuild the CLI image with `docker compose build tradingagents`.
 
 Results, reports, the memory log and the cache live in the `tradingagents_data` volume. To keep them in a folder on the host instead, create the folder and point `TRADINGAGENTS_DATA_DIR` at it, in `.env` or the shell: `mkdir -p data && TRADINGAGENTS_DATA_DIR=./data docker compose run --rm tradingagents`.
 
@@ -423,3 +423,13 @@ Please reference our work if you find *TradingAgents* provides you with some hel
       url={https://arxiv.org/abs/2412.20138}, 
 }
 ```
+
+## TradingAgents Portal (initialization)
+
+A read-only web UI for runtime status and core configuration is available under
+[`portal/`](portal/README.md). Run `docker compose up --build` and open
+<http://127.0.0.1:8000>, or use `./scripts/dev-portal.sh` for local development.
+Workspace access requires [Google sign-in and an explicit email allowlist](portal/AUTH.md).
+The initial allowlist is empty; configure OAuth credentials and approved emails to sign in.
+Analysis execution and history browsing are reserved for a later phase. Existing
+CLI commands, including `docker compose run --rm tradingagents`, remain available.
