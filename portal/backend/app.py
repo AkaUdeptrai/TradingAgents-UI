@@ -1,4 +1,4 @@
-"""Read-only Portal API and optional bundled frontend."""
+"""TradingAgents UI application with its bundled API and frontend."""
 
 from collections.abc import Callable
 from typing import TypeVar
@@ -39,7 +39,7 @@ def create_app(
     config = config or PortalConfig.from_env()
     adapter = adapter or TradingAgentsAdapter()
     app = FastAPI(
-        title="TradingAgents Portal API",
+        title="TradingAgents UI",
         version=__version__,
         docs_url=None,
         redoc_url=None,
@@ -88,7 +88,7 @@ def create_app(
         "/api/version", response_model=VersionResponse, responses=errors, dependencies=protected
     )
     def version() -> VersionResponse:
-        return VersionResponse(portal=__version__, core=_metadata(adapter.version))
+        return VersionResponse(ui=__version__, core=_metadata(adapter.version))
 
     @app.get(
         "/api/capabilities",
@@ -111,7 +111,7 @@ def create_app(
 
     @app.get("/docs", include_in_schema=False, dependencies=protected)
     def docs() -> HTMLResponse:
-        return get_swagger_ui_html(openapi_url="/openapi.json", title="Portal API")
+        return get_swagger_ui_html(openapi_url="/openapi.json", title="TradingAgents UI")
 
     if config.static_dir is not None:
         index = config.static_dir / "index.html"

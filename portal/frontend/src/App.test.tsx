@@ -41,9 +41,9 @@ it('renders the application and real API status with an honest empty state', asy
     backend: 'available',
     core: 'available',
   });
-  vi.spyOn(api, 'version').mockResolvedValue({ portal: '0.1.0', core: '0.7.1' });
+  vi.spyOn(api, 'version').mockResolvedValue({ ui: '0.1.0', core: '0.7.1' });
   renderApp();
-  expect(await screen.findByRole('heading', { name: 'TradingAgents Portal' })).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { name: 'TradingAgents UI' })).toBeInTheDocument();
   expect(await screen.findByText('Đã kết nối')).toBeInTheDocument();
   expect(screen.getByText('Khả dụng')).toBeInTheDocument();
   expect(screen.getByText('v0.7.1')).toBeInTheDocument();
@@ -55,9 +55,9 @@ it('shows API failure and recovers after retry', async () => {
     .spyOn(api, 'health')
     .mockRejectedValueOnce(new Error('offline'))
     .mockResolvedValue({ status: 'ok', backend: 'available', core: 'available' });
-  vi.spyOn(api, 'version').mockResolvedValue({ portal: '0.1.0', core: '0.7.1' });
+  vi.spyOn(api, 'version').mockResolvedValue({ ui: '0.1.0', core: '0.7.1' });
   renderApp();
-  expect(await screen.findByRole('alert')).toHaveTextContent('Không thể tải dữ liệu Portal');
+  expect(await screen.findByRole('alert')).toHaveTextContent('Không thể tải dữ liệu TradingAgents UI');
   await userEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
   expect(await screen.findByText('Đã kết nối')).toBeInTheDocument();
   expect(health).toHaveBeenCalledTimes(2);
@@ -69,7 +69,7 @@ it('keeps backend connected when the core health check fails', async () => {
     backend: 'available',
     core: 'unavailable',
   });
-  vi.spyOn(api, 'version').mockResolvedValue({ portal: '0.1.0', core: '0.7.1' });
+  vi.spyOn(api, 'version').mockResolvedValue({ ui: '0.1.0', core: '0.7.1' });
   renderApp();
   expect(await screen.findByText('Đã kết nối')).toBeInTheDocument();
   expect(screen.getByText('Không khả dụng')).toBeInTheDocument();

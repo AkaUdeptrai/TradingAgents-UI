@@ -1,11 +1,21 @@
-# TradingAgents Portal
+# TradingAgents UI
 
-A Google-authenticated, read-only web interface over the existing TradingAgents runtime.
+A Google-authenticated, read-only TradingAgents UI that includes the existing runtime.
 The Dashboard reports actual API/core import status and versions. Settings shows
 public core configuration and the core provider/model/analyst catalog. New Analysis
 and History are skeleton pages; there is no analysis execution or simulated data.
 
-## Architecture
+## One application
+
+The production product is a single application and a single Docker service named
+`tradingagents-ui`. The React UI, its internal FastAPI interface, and the Python
+TradingAgents runtime are packaged and started together. You do not deploy or
+operate a separate backend service.
+
+During local development, the helper script supervises Vite and Python processes
+for hot reload. That development arrangement does not change the production package.
+
+## Internal application structure
 
 ```text
 Browser (React / TypeScript / Vite)
@@ -16,13 +26,12 @@ Browser (React / TypeScript / Vite)
 ```
 
 `tradingagents/` and `cli/` retain their implementation and behavior. Only
-`backend/services/tradingagents_adapter.py` imports core modules in Portal
+`backend/services/tradingagents_adapter.py` imports core modules in TradingAgents UI
 production code. It imports the real graph class for health checks, without
 constructing a graph, creating an LLM client, or calling an external service.
 
-One Docker service contains the Python runtime and compiled frontend; FastAPI
-serves the workspace and login routes and static assets on the same origin as `/api`.
-Local development uses Vite with an API proxy and a separate Python process.
+One Docker service contains the Python runtime and compiled frontend. Its internal
+API serves workspace data and login routes on the same origin as the UI.
 
 Google sign-in uses a small SQLite repository for one-time login attempts and
 revocable sessions (`backend/auth/store.py`, schema version 1). It is separate
@@ -44,12 +53,12 @@ From the repository root:
 
 ```sh
 cp portal/.env.example portal/.env
-./scripts/dev-portal.sh
+./scripts/dev-tradingagents-ui.sh
 ```
 
 Open <http://127.0.0.1:5173>. Configure Google using [AUTH.md](AUTH.md) to unlock the workspace. The script creates `.venv` if missing, installs
-Python extras and `npm ci`, then starts both servers; Ctrl-C stops both. To choose
-a Python binary on first run, use `PORTAL_PYTHON=python3.11 ./scripts/dev-portal.sh`.
+UI Python dependencies and `npm ci`, then starts the application; Ctrl-C stops it.
+To choose a Python binary on first run, use `PORTAL_PYTHON=python3.11 ./scripts/dev-tradingagents-ui.sh`.
 Existing `.venv` environments are reused. The script requires a POSIX shell (or WSL).
 
 After dependencies are installed, start both without reinstalling:
@@ -81,7 +90,7 @@ docker compose up --build
 ```
 
 Open <http://127.0.0.1:8000>. To detach, add `-d`; to stop, `docker compose down`.
-The published port binds to loopback. Google sign-in protects Portal data. For a
+The published port binds to loopback. Google sign-in protects TradingAgents UI data. For a
 shared deployment terminate HTTPS at a reverse proxy, forward `/api` on the same
 origin, and set `PORTAL_PUBLIC_URL` to the exact HTTPS browser origin.
 
@@ -102,10 +111,10 @@ docker compose --profile ollama run --rm tradingagents-ollama
 A dedicated `portal_auth` named volume persists sessions across restarts; it does
 not share the CLI data volume.
 
-The CLI service now has the `cli` profile so normal `up` starts Portal without
+The CLI service now has the `cli` profile so normal `up` starts TradingAgents UI without
 an interactive CLI. Root `.env` remains mandatory for explicit CLI services, as
-before. Portal loads it optionally. CLI's existing data volume is unchanged;
-Portal does not mount/read report history in this phase.
+before. TradingAgents UI loads it optionally. CLI's existing data volume is unchanged;
+TradingAgents UI does not mount/read report history in this phase.
 
 To change the **published** Docker port, export it for Compose interpolation:
 `PORTAL_PORT=8010 docker compose up --build`. The container always listens on
@@ -139,7 +148,7 @@ core mechanism. Docker injects root `.env` and `portal/.env`; it does not mount
 | `PORTAL_AUTH_DB` | `~/.tradingagents/portal/auth.sqlite3` | Server-side session SQLite file. |
 | `PORTAL_SESSION_TTL_SECONDS` | `28800` | Fixed session lifetime, 300–86400 seconds. |
 
-The browser receives only `PORTAL_API_URL` from Portal environment configuration.
+The browser receives only `PORTAL_API_URL` from TradingAgents UI environment configuration.
 Never put credentials in browser-exposed variables. Settings uses an explicit
 allowlist; paths, endpoint URLs and credentials are not returned. Core metadata
 errors return a generic 503 without logging the underlying error text.
@@ -149,8 +158,8 @@ errors return a generic 503 without logging the underlying error text.
 | Method/path | Behavior |
 | --- | --- |
 | `GET /api/health` | Backend status + real graph import check; 200 healthy, 503 degraded. No provider calls. |
-| `GET /api/version` | Portal and core versions. |
-| `GET /api/capabilities` | Core model catalog grouped by provider/tier, analysts, public configurable setting descriptors, language capability, Portal runtime flags. |
+| `GET /api/version` | TradingAgents UI and core versions. |
+| `GET /api/capabilities` | Core model catalog grouped by provider/tier, analysts, public configurable setting descriptors, language capability, TradingAgents UI runtime flags. |
 | `GET /api/settings` | Read-only public projection of `build_default_config()` including environment overrides. |
 | `GET /openapi.json` | Authenticated contract; authenticated documentation at `/docs`. |
 | `GET /api/auth/config` | Public provider/setup status; no credentials or allowlist. |
@@ -196,7 +205,7 @@ portal/
   backend/
     __main__.py                # console/module startup
     app.py                     # endpoints and SPA serving
-    config.py                  # Portal environment
+    config.py                  # TradingAgents UI environment
     models.py                  # public Pydantic schemas
     services/tradingagents_adapter.py
     auth/                      # Google OIDC, session store, access checks
@@ -213,15 +222,15 @@ portal/
       App.test.tsx, test-setup.ts
   schema/openapi.json
   scripts/{dev,export_openapi}.py
-scripts/dev-portal.sh
-.github/workflows/portal.yml
+scripts/dev-tradingagents-ui.sh
+.github/workflows/tradingagents-ui.yml
 ```
 
 ## Checks and contract generation
 
 ```sh
 .venv/bin/pytest -q                         # existing core suite
-.venv/bin/pytest -q portal/backend/tests    # offline Portal suite
+.venv/bin/pytest -q portal/backend/tests    # offline TradingAgents UI suite
 .venv/bin/ruff check .
 .venv/bin/ruff format --check portal
 .venv/bin/mypy
@@ -232,7 +241,7 @@ npm --prefix portal/frontend run test
 npm --prefix portal/frontend run build
 .venv/bin/python -m portal.scripts.export_openapi --check
 npm --prefix portal/frontend run api:check
-docker compose build portal tradingagents
+docker compose build tradingagents-ui tradingagents
 ```
 
 After changing backend response models:
@@ -251,7 +260,7 @@ files, including empty responses, disconnected backend and unavailable core.
 ## Next phase
 
 - Define the analysis execution/job lifecycle through the adapter and reuse core execution.
-- Decide how to index existing reports and persist Portal jobs before adding a database.
+- Decide how to index existing reports and persist TradingAgents UI jobs before adding a database.
 - Add admin-only endpoints before introducing administrative writes; this phase exposes no admin write actions.
 - Extend config schemas/validation from core; add optional SDK/provider readiness checks separately from health.
 - Reuse existing token-usage callbacks and reporting when execution is introduced.

@@ -26,7 +26,7 @@ class AuthService:
     def require_user(self, token: Annotated[str | None, Security(_cookie)]) -> UserIdentity:
         user = self.store.user(token) if token and self.config.configured else None
         if user is None or user.email not in self.config.allowed_emails:
-            raise HTTPException(status_code=401, detail="Sign in to access the Portal.")
+            raise HTTPException(status_code=401, detail="Sign in to access TradingAgents UI.")
         role = "admin" if user.email in self.config.admin_emails else "user"
         return user.model_copy(update={"role": role})
 

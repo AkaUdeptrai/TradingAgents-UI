@@ -1,4 +1,4 @@
-name: Portal
+name: TradingAgents UI
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  portal:
+  tradingagents-ui:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -18,7 +18,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: portal/frontend/package-lock.json
-      - run: pip install -e '.[dev,portal,portal-dev]'
+      - run: pip install -e '.[dev,ui,ui-dev]'
       - run: npm --prefix portal/frontend ci
       - run: pytest -q portal/backend/tests
       - run: ruff check portal && ruff format --check portal && mypy
@@ -28,10 +28,10 @@ jobs:
       - run: npm --prefix portal/frontend run format:check
       - run: npm --prefix portal/frontend run test
       - run: npm --prefix portal/frontend run build
-      - run: docker compose build portal tradingagents
+      - run: docker compose build tradingagents-ui tradingagents
       - name: Container smoke
         run: |
-          docker compose up -d --wait portal
+          docker compose up -d --wait tradingagents-ui
           curl --fail http://127.0.0.1:8000/api/health
           curl --fail http://127.0.0.1:8000/api/auth/config
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:8000/api/capabilities)" = 401

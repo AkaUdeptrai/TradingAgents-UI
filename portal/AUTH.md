@@ -1,6 +1,6 @@
 # Google sign-in
 
-Portal uses Google OpenID Connect with an exact email allowlist. There is no
+TradingAgents UI uses Google OpenID Connect with an exact email allowlist. There is no
 password login, public sign-up or authentication bypass. The initial allowlist
 is deliberately empty, as requested: nobody can sign in until it is configured.
 
@@ -14,7 +14,7 @@ is deliberately empty, as requested: nobody can sign in until it is configured.
    - Local dev script: `http://127.0.0.1:5173/api/auth/google/callback`
    - Hosted: `https://your-portal.example/api/auth/google/callback`
 3. If the Google app is in external Testing mode, also add the intended accounts
-   as Google test users. Google consent configuration and Portal's allowlist are
+   as Google test users. Google consent configuration and TradingAgents UI's allowlist are
    separate controls; both must allow the account.
 4. Set these values in the ignored `portal/.env` file or your secret manager:
 
@@ -37,14 +37,14 @@ configuration prevents startup. The role is recalculated for each authenticated
 request, so changes apply to existing sessions after reload.
 
 `PORTAL_PUBLIC_URL` is the browser origin, not the backend container address.
-When empty, `dev-portal.sh` uses `http://127.0.0.1:5173`; backend/Docker uses
+When empty, `dev-tradingagents-ui.sh` uses `http://127.0.0.1:5173`; backend/Docker uses
 `http://127.0.0.1:8000`. Keep the hostname consistent: `localhost` and `127.0.0.1`
 are different origins/cookie hosts. With a custom Docker host port, set both
 Compose's exported `PORTAL_PORT` and `PORTAL_PUBLIC_URL` in `portal/.env`.
 
-Restart the backend/container after configuration changes. Then open Portal and
+Restart the backend/container after configuration changes. Then open TradingAgents UI and
 choose **Sign in with Google**. A successful sign-in returns to the protected
-page you requested. Sign out revokes the Portal session; it does not sign you out
+page you requested. Sign out revokes the TradingAgents UI session; it does not sign you out
 of Google or other applications.
 
 The server flow and Google token claims follow the [Google OIDC documentation](https://developers.google.com/identity/openid-connect/openid-connect).
@@ -58,12 +58,12 @@ PKCE is handled by [Authlib's OAuth client](https://docs.authlib.org/en/stable/o
 - HTTPS is required outside loopback. Cookies are host-only, HttpOnly, SameSite=Lax
   and Secure when the public URL is HTTPS. Do not expose a plaintext alternate origin.
 - Google verifies the account; `google-auth` verifies ID-token signature, issuer,
-  audience and timestamps. Portal also checks nonce, authorized party and verified
+  audience and timestamps. TradingAgents UI also checks nonce, authorized party and verified
   email, then enforces the exact allowlist. The stable Google subject identifies
   the account; the email is the access-policy field.
 - One-time state is bound to a browser cookie, expires after ten minutes and is
   consumed atomically. PKCE uses S256. Return destinations are restricted to the
-  four existing Portal routes; external redirects are rejected.
+  four existing TradingAgents UI routes; external redirects are rejected.
 - Session cookies contain only a random opaque identifier. SQLite stores its hash,
   minimal identity (subject, email, name) and expiry. Google tokens, client secrets
   and passwords are not persisted. Default session lifetime is eight hours, with
@@ -82,13 +82,13 @@ PKCE is handled by [Authlib's OAuth client](https://docs.authlib.org/en/stable/o
   subsequent login attempts; logout immediately removes the current session.
 - Mutation endpoints must enforce CSRF protection. Current logout requires the
   exact configured `Origin`. Read-only settings remain read-only.
-- Uvicorn access logs are disabled by the Portal entry point so callback URLs do
+- Uvicorn access logs are disabled by the TradingAgents UI entry point so callback URLs do
   not log authorization codes. Configure proxies/APM to omit callback query
   strings and redact cookies/authorization headers too. Do not enable HTTP debug logs.
 
 ## Verification and limits
 
-Offline tests exercise the full Portal login/callback/session/logout sequence,
+Offline tests exercise the full TradingAgents UI login/callback/session/logout sequence,
 using fake provider exchanges only in tests. Separate tests pass locally signed
 JWTs through the real Google verifier to cover signature/issuer/audience/expiry,
 nonce, verified email and authorized-party rejection. Tests also cover browser

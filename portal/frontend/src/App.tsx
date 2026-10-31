@@ -61,14 +61,14 @@ function Workspace({
         <div className="sidebar-footer">
           <span className="workspace-avatar">TA</span>
           <div>
-            Không gian làm việc cục bộ<small>Giai đoạn khởi tạo Portal</small>
+            TradingAgents UI<small>Không gian nghiên cứu của bạn</small>
           </div>
         </div>
       </aside>
       <div className="main-shell">
         <header className="topbar">
           <span>
-            Không gian làm việc <span className="breadcrumb">/ Portal</span>
+            TradingAgents UI <span className="breadcrumb">/ Nghiên cứu</span>
           </span>
           <div className="account-controls">
             <span className="phase-tag">
@@ -106,9 +106,8 @@ function Workspace({
                     </div>
                   </div>
                   <section className="panel">
-                    <EmptyState title="Chưa thể chạy phân tích trên Portal">
-                      Dùng TradingAgents CLI hiện có để chạy phân tích. Quy trình chạy phân tích
-                      trên Portal chưa được triển khai.
+                    <EmptyState title="Tính năng phân tích đang được hoàn thiện">
+                      Luồng chạy phân tích trực tiếp trong TradingAgents UI chưa được bật ở bản này.
                     </EmptyState>
                   </section>
                 </>
@@ -128,7 +127,7 @@ function Workspace({
                   <section className="panel">
                     <EmptyState title="Lịch sử chưa được kết nối">
                       Báo cáo từ CLI vẫn nằm ở vị trí đã cấu hình. Tính năng nhập và xem báo cáo
-                      trên Portal dự kiến có trong giai đoạn tiếp theo.
+                      trong TradingAgents UI dự kiến có trong giai đoạn tiếp theo.
                     </EmptyState>
                   </section>
                 </>
@@ -143,7 +142,7 @@ function Workspace({
           </Routes>
         </main>
         <footer className="main-footer">
-          TradingAgents Portal<span>Vận hành trên TradingAgents của bạn</span>
+          TradingAgents UI<span>Vận hành trên TradingAgents của bạn</span>
         </footer>
       </div>
     </div>

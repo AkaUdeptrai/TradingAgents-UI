@@ -38,7 +38,7 @@ export function Settings() {
       {error && <ErrorState retry={retry} />}
       {!loading && !error && values.length === 0 && (
         <EmptyState title="Chưa có cài đặt">
-          Backend chưa trả về cấu hình công khai nào.
+          chưa trả về cấu hình công khai nào.
         </EmptyState>
       )}
       {values.length > 0 && (

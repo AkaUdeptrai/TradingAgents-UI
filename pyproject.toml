@@ -31,6 +31,18 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+ui = [
+    "Authlib>=1.6.5,<2",
+    "google-auth>=2.40,<3",
+    "fastapi>=0.115,<1",
+    "uvicorn>=0.34,<1",
+    "pydantic>=2.7.4,<3",
+]
+ui-dev = [
+    "httpx>=0.28,<1",
+    "mypy>=1.15,<2",
+]
+# Compatibility extras for existing Portal installation instructions.
 portal = [
     "Authlib>=1.6.5,<2",
     "google-auth>=2.40,<3",
@@ -56,6 +68,7 @@ bedrock = [
 [project.scripts]
 tradingagents = "cli.main:app"
 tradingagents-portal = "portal.backend.__main__:main"
+tradingagents-ui = "portal.backend.__main__:main"
 
 [tool.setuptools.dynamic]
 version = {attr = "tradingagents.__version__"}

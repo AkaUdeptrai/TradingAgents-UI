@@ -6,7 +6,7 @@ import { EmptyState, ErrorState } from '../components/States';
 export function Dashboard() {
   const health = useResource(api.health);
   const version = useResource(api.version);
-  const backend = health.loading ? 'Đang kiểm tra…' : health.data ? 'Đã kết nối' : 'Mất kết nối';
+  const appStatus = health.loading ? 'Đang kiểm tra…' : health.data ? 'Đã kết nối' : 'Mất kết nối';
   const core = health.loading
     ? 'Đang kiểm tra…'
     : health.data?.core === 'available'
@@ -17,7 +17,7 @@ export function Dashboard() {
       <div className="page-heading">
         <div>
           <p className="eyebrow">TỔNG QUAN KHÔNG GIAN LÀM VIỆC</p>
-          <h1>TradingAgents Portal</h1>
+          <h1>TradingAgents UI</h1>
           <p>Không gian nghiên cứu thị trường với nhiều tác tử.</p>
         </div>
         <span className="phase-tag">Giai đoạn nền tảng</span>
@@ -32,12 +32,12 @@ export function Dashboard() {
       )}
       <section className="status-grid" aria-label="Trạng thái hệ thống">
         <article className="status-card">
-          <span className="card-label">Backend</span>
+          <span className="card-label">Ứng dụng</span>
           <strong>
             <i className={`dot ${health.data ? 'good' : 'pending'}`} />
-            {backend}
+            {appStatus}
           </strong>
-          <p>Kết nối API của Portal</p>
+          <p>Trạng thái TradingAgents UI</p>
         </article>
         <article className="status-card">
           <span className="card-label">TradingAgents Core</span>
@@ -52,7 +52,7 @@ export function Dashboard() {
           <strong>
             {version.loading ? 'Đang kiểm tra…' : version.data ? `v${version.data.core}` : 'Không khả dụng'}
           </strong>
-          <p>TradingAgents{version.data ? ` · Portal v${version.data.portal}` : ''}</p>
+          <p>TradingAgents UI{version.data ? ` · v${version.data.ui}` : ''}</p>
         </article>
       </section>
       <section className="panel">

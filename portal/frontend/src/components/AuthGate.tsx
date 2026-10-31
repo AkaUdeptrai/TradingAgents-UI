@@ -50,7 +50,7 @@ export function AuthGate({
   }, [retry]);
 
   useEffect(() => {
-    document.title = session.data?.user ? 'TradingAgents Portal' : 'Đăng nhập · TradingAgents Portal';
+    document.title = session.data?.user ? 'TradingAgents UI' : 'Đăng nhập · TradingAgents UI';
   }, [session.data?.user]);
 
   async function logout() {
@@ -111,7 +111,7 @@ export function AuthGate({
           </span>
         </div>
         <h1 id="login-title">Không gian nghiên cứu của bạn.</h1>
-        <p>Đăng nhập bằng tài khoản Google được duyệt để truy cập TradingAgents Portal.</p>
+        <p>Đăng nhập bằng tài khoản Google được duyệt để truy cập TradingAgents UI.</p>
         <div className="login-feedback" aria-live="polite">
           {!configured ? (
             <p className="notice">

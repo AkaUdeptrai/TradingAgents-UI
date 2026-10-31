@@ -9,7 +9,7 @@ export type AuthStatus = components['schemas']['AuthStatus'];
 
 export class ApiError extends Error {
   constructor(public status: number) {
-    super(`Portal API returned ${status}.`);
+    super(`TradingAgents UI returned ${status}.`);
   }
 }
 
@@ -47,7 +47,7 @@ async function get<T>(
   }
   if (!response.ok) throw new ApiError(response.status);
   if (json === null || typeof json !== 'object')
-    throw new Error('Portal API returned an empty response.');
+    throw new Error('TradingAgents UI returned an empty response.');
   return json as T;
 }
 

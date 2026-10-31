@@ -1,4 +1,4 @@
-name: Portal image
+name: TradingAgents UI image
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
             type=sha,format=short
             type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Build and publish Portal image
+      - name: Build and publish TradingAgents UI image
         uses: docker/build-push-action@v7
         with:
           context: .

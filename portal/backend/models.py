@@ -12,7 +12,7 @@ class HealthResponse(BaseModel):
 
 
 class VersionResponse(BaseModel):
-    portal: str
+    ui: str
     core: str
 
 

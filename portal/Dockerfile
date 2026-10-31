@@ -18,7 +18,7 @@ COPY tradingagents/ tradingagents/
 COPY cli/ cli/
 COPY portal/__init__.py portal/__init__.py
 COPY portal/backend/ portal/backend/
-RUN pip install --no-cache-dir '.[portal]'
+RUN pip install --no-cache-dir '.[ui]'
 
 FROM python:3.13-slim
 ENV PATH="/opt/venv/bin:$PATH" PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
@@ -31,4 +31,4 @@ WORKDIR /app
 USER appuser
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=15s --start-period=30s CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=10)"
-CMD ["tradingagents-portal"]
+CMD ["tradingagents-ui"]

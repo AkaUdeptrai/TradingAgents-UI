@@ -1,5 +1,5 @@
 services:
-  portal:
+  tradingagents-ui:
     build:
       context: .
       dockerfile: portal/Dockerfile

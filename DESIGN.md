@@ -1,6 +1,6 @@
 ---
 version: alpha
-name: TradingAgents Portal
+name: TradingAgents UI
 description: A quiet research workspace with a forest-green navigation rail and readable configuration surfaces.
 colors:
   primary: '#244a37'
@@ -28,14 +28,14 @@ components:
   feedback: {}
 ---
 
-# TradingAgents Portal Design System
+# TradingAgents UI Design System
 
 ## Overview
 
 The visual reference is a quiet research desk: forest-green navigation, white work
 surfaces and clear status text. This is a product interface for people using the
 existing TradingAgents runtime, not a trading terminal or marketing page.
-The Portal interface is localized in Vietnamese. No Japan-market or other
+The TradingAgents UI interface is localized in Vietnamese. No Japan-market or other
 jurisdiction-specific workflow is assumed.
 User decisions on 2026-10-30: Google sign-in, explicitly allowed emails only,
 allowlist initially empty. No public registration or password form.

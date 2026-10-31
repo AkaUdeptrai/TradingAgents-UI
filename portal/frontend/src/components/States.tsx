@@ -4,8 +4,8 @@ export function ErrorState({ retry }: { retry: () => void }) {
   return (
     <div className="notice error" role="alert">
       <div>
-        <strong>Không thể tải dữ liệu Portal</strong>
-        <p>Kiểm tra backend đang chạy rồi thử lại.</p>
+        <strong>Không thể tải dữ liệu TradingAgents UI</strong>
+        <p>Kiểm tra kết nối rồi thử lại.</p>
       </div>
       <button className="button secondary" onClick={retry}>
         Thử lại

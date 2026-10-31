@@ -313,8 +313,8 @@ export interface components {
         VersionResponse: {
             /** Core */
             core: string;
-            /** Portal */
-            portal: string;
+            /** Ui */
+            ui: string;
         };
     };
     responses: never;

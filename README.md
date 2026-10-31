@@ -424,12 +424,15 @@ Please reference our work if you find *TradingAgents* provides you with some hel
 }
 ```
 
-## TradingAgents Portal (initialization)
+## TradingAgents UI
 
-A read-only web UI for runtime status and core configuration is available under
-[`portal/`](portal/README.md). Run `docker compose up --build` and open
-<http://127.0.0.1:8000>, or use `./scripts/dev-portal.sh` for local development.
+TradingAgents UI runs as one application: the web interface and its local TradingAgents
+runtime are bundled together. You do not need to deploy or configure a separate backend.
+Start it with `docker compose up --build` and open <http://127.0.0.1:8000>. For local
+development, use `./scripts/dev-tradingagents-ui.sh`. Setup details are in
+[`portal/README.md`](portal/README.md).
+
 Workspace access requires [Google sign-in and an explicit email allowlist](portal/AUTH.md).
 The initial allowlist is empty; configure OAuth credentials and approved emails to sign in.
-Analysis execution and history browsing are reserved for a later phase. Existing
-CLI commands, including `docker compose run --rm tradingagents`, remain available.
+Analysis execution and history browsing are not yet available in the UI. Existing CLI
+commands, including `docker compose run --rm tradingagents`, remain available.
