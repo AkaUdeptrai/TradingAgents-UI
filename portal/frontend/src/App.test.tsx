@@ -11,6 +11,7 @@ beforeEach(() => {
     subject: 'test',
     email: 'test@example.com',
     name: 'Researcher',
+    role: 'user',
   });
 });
 
@@ -43,10 +44,10 @@ it('renders the application and real API status with an honest empty state', asy
   vi.spyOn(api, 'version').mockResolvedValue({ portal: '0.1.0', core: '0.7.1' });
   renderApp();
   expect(await screen.findByRole('heading', { name: 'TradingAgents Portal' })).toBeInTheDocument();
-  expect(await screen.findByText('Connected')).toBeInTheDocument();
-  expect(screen.getByText('Available')).toBeInTheDocument();
+  expect(await screen.findByText('Đã kết nối')).toBeInTheDocument();
+  expect(screen.getByText('Khả dụng')).toBeInTheDocument();
   expect(screen.getByText('v0.7.1')).toBeInTheDocument();
-  expect(screen.getByText('Your research starts here')).toBeInTheDocument();
+  expect(screen.getByText('Bắt đầu nghiên cứu tại đây')).toBeInTheDocument();
 });
 
 it('shows API failure and recovers after retry', async () => {
@@ -56,9 +57,9 @@ it('shows API failure and recovers after retry', async () => {
     .mockResolvedValue({ status: 'ok', backend: 'available', core: 'available' });
   vi.spyOn(api, 'version').mockResolvedValue({ portal: '0.1.0', core: '0.7.1' });
   renderApp();
-  expect(await screen.findByRole('alert')).toHaveTextContent('Unable to load Portal data');
-  await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
-  expect(await screen.findByText('Connected')).toBeInTheDocument();
+  expect(await screen.findByRole('alert')).toHaveTextContent('Không thể tải dữ liệu Portal');
+  await userEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
+  expect(await screen.findByText('Đã kết nối')).toBeInTheDocument();
   expect(health).toHaveBeenCalledTimes(2);
 });
 
@@ -70,8 +71,8 @@ it('keeps backend connected when the core health check fails', async () => {
   });
   vi.spyOn(api, 'version').mockResolvedValue({ portal: '0.1.0', core: '0.7.1' });
   renderApp();
-  expect(await screen.findByText('Connected')).toBeInTheDocument();
-  expect(screen.getByText('Unavailable')).toBeInTheDocument();
+  expect(await screen.findByText('Đã kết nối')).toBeInTheDocument();
+  expect(screen.getByText('Không khả dụng')).toBeInTheDocument();
 });
 
 it('renders empty settings without crashing', async () => {

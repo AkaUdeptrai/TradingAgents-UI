@@ -50,7 +50,7 @@ export function AuthGate({
   }, [retry]);
 
   useEffect(() => {
-    document.title = session.data?.user ? 'TradingAgents Portal' : 'Sign in · TradingAgents Portal';
+    document.title = session.data?.user ? 'TradingAgents Portal' : 'Đăng nhập · TradingAgents Portal';
   }, [session.data?.user]);
 
   async function logout() {
@@ -78,14 +78,14 @@ export function AuthGate({
   if (session.loading)
     return (
       <main className="login-shell">
-        <p role="status">Checking your session…</p>
+        <p role="status">Đang kiểm tra phiên đăng nhập…</p>
       </main>
     );
   if (session.error)
     return (
       <main className="login-shell">
         <div className="login-panel">
-          <h1>Connect to your workspace</h1>
+          <h1>Kết nối với không gian làm việc</h1>
           <ErrorState retry={retry} />
         </div>
       </main>
@@ -107,44 +107,44 @@ export function AuthGate({
             ta<span>↗</span>
           </span>
           <span>
-            TradingAgents<small>RESEARCH PORTAL</small>
+            TradingAgents<small>CỔNG NGHIÊN CỨU</small>
           </span>
         </div>
-        <h1 id="login-title">Your research workspace.</h1>
-        <p>Sign in with your approved Google account to access TradingAgents Portal.</p>
+        <h1 id="login-title">Không gian nghiên cứu của bạn.</h1>
+        <p>Đăng nhập bằng tài khoản Google được duyệt để truy cập TradingAgents Portal.</p>
         <div className="login-feedback" aria-live="polite">
           {!configured ? (
             <p className="notice">
-              Google sign-in is not set up yet. Ask the workspace administrator to configure Google
-              sign-in and approve your email address.
+              Google chưa được cấu hình. Hãy liên hệ quản trị viên để thiết lập đăng nhập và duyệt
+              địa chỉ email của bạn.
             </p>
           ) : error === 'access_denied' ? (
             <p className="notice" role="alert">
-              This account cannot access the workspace. Choose an approved account or contact your
-              administrator.
+              Tài khoản này chưa được phép truy cập. Hãy chọn tài khoản đã được duyệt hoặc liên hệ
+              quản trị viên.
             </p>
           ) : error ? (
             <p className="notice" role="alert">
-              Sign-in could not be completed. Try again to start a new Google sign-in.
+              Không thể hoàn tất đăng nhập. Hãy thử lại để bắt đầu lượt đăng nhập Google mới.
             </p>
           ) : expired ? (
             <p className="notice" role="status">
-              Your session has ended. Sign in again to continue.
+              Phiên đăng nhập đã kết thúc. Hãy đăng nhập lại để tiếp tục.
             </p>
           ) : (
-            <p className="login-hint">Access is limited to approved email addresses.</p>
+            <p className="login-hint">Chỉ email đã được duyệt mới có thể truy cập.</p>
           )}
         </div>
         {configured ? (
           <a className="button google-sign-in" href={authLoginUrl(next)}>
-            <span aria-hidden="true">G</span>Sign in with Google
+            <span aria-hidden="true">G</span>Đăng nhập bằng Google
           </a>
         ) : (
           <button className="button google-sign-in" disabled>
-            <span aria-hidden="true">G</span>Sign in with Google
+            <span aria-hidden="true">G</span>Đăng nhập bằng Google
           </button>
         )}
-        <p className="login-footnote">Your Google password stays with Google.</p>
+        <p className="login-footnote">Mật khẩu Google của bạn vẫn được bảo vệ bởi Google.</p>
       </section>
     </main>
   );

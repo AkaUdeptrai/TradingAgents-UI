@@ -109,7 +109,7 @@
       "LanguageCapability": {
         "properties": {
           "description": {
-            "default": "Core accepts a language name; suggestions are not an exhaustive list.",
+            "default": "Core nh\u1eadn t\u00ean ng\u00f4n ng\u1eef d\u1ea1ng v\u0103n b\u1ea3n; danh s\u00e1ch g\u1ee3i \u00fd kh\u00f4ng \u0111\u1ea7y \u0111\u1ee7.",
             "title": "Description",
             "type": "string"
           },
@@ -264,6 +264,15 @@
           },
           "name": {
             "title": "Name",
+            "type": "string"
+          },
+          "role": {
+            "default": "user",
+            "enum": [
+              "user",
+              "admin"
+            ],
+            "title": "Role",
             "type": "string"
           },
           "subject": {

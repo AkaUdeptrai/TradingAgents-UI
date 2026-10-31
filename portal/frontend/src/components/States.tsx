@@ -4,11 +4,11 @@ export function ErrorState({ retry }: { retry: () => void }) {
   return (
     <div className="notice error" role="alert">
       <div>
-        <strong>Unable to load Portal data</strong>
-        <p>Check that the backend is running, then try again.</p>
+        <strong>Không thể tải dữ liệu Portal</strong>
+        <p>Kiểm tra backend đang chạy rồi thử lại.</p>
       </div>
       <button className="button secondary" onClick={retry}>
-        Try again
+        Thử lại
       </button>
     </div>
   );

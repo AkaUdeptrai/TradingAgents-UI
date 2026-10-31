@@ -22,6 +22,7 @@ is deliberately empty, as requested: nobody can sign in until it is configured.
 PORTAL_GOOGLE_CLIENT_ID=your-web-client-id.apps.googleusercontent.com
 PORTAL_GOOGLE_CLIENT_SECRET=
 PORTAL_ALLOWED_EMAILS=
+PORTAL_ADMIN_EMAILS=
 PORTAL_PUBLIC_URL=
 ```
 
@@ -29,6 +30,11 @@ Fill the secret locally, and set `PORTAL_ALLOWED_EMAILS` to exact addresses such
 as `person@example.com,another@example.com` when you are ready. The example keeps
 it empty intentionally. Matching trims surrounding whitespace and ignores case;
 it does not equate Gmail aliases, strip dots or allow wildcard domains.
+
+`PORTAL_ADMIN_EMAILS` assigns administrator roles to exact approved addresses.
+Every administrator address must also be in `PORTAL_ALLOWED_EMAILS`; an invalid
+configuration prevents startup. The role is recalculated for each authenticated
+request, so changes apply to existing sessions after reload.
 
 `PORTAL_PUBLIC_URL` is the browser origin, not the backend container address.
 When empty, `dev-portal.sh` uses `http://127.0.0.1:5173`; backend/Docker uses

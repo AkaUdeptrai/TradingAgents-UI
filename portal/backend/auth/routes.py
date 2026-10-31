@@ -1,3 +1,4 @@
+import logging
 import secrets
 from typing import Annotated
 
@@ -13,6 +14,7 @@ from portal.backend.models import AuthStatus, ErrorResponse, UserIdentity
 SESSION_COOKIE = "portal_session"
 FLOW_COOKIE = "portal_login"
 _cookie = APIKeyCookie(name=SESSION_COOKIE, auto_error=False)
+logger = logging.getLogger(__name__)
 
 
 class AuthService:
@@ -25,6 +27,13 @@ class AuthService:
         user = self.store.user(token) if token and self.config.configured else None
         if user is None or user.email not in self.config.allowed_emails:
             raise HTTPException(status_code=401, detail="Sign in to access the Portal.")
+        role = "admin" if user.email in self.config.admin_emails else "user"
+        return user.model_copy(update={"role": role})
+
+    def require_admin(self, token: Annotated[str | None, Security(_cookie)]) -> UserIdentity:
+        user = self.require_user(token)
+        if user.role != "admin":
+            raise HTTPException(status_code=403, detail="Administrator access is required.")
         return user
 
     def set_cookie(self, response: Response, name: str, value: str, ttl: int) -> None:
@@ -84,15 +93,28 @@ class AuthService:
                 if state and binding and self.config.configured
                 else None
             )
+            if not attempt:
+                logger.warning(
+                    "OAuth callback has no matching login attempt "
+                    "(state_present=%s flow_cookie_present=%s configured=%s)",
+                    bool(state),
+                    bool(binding),
+                    self.config.configured,
+                )
             response = RedirectResponse(
                 self.config.public_url + "/login?error=" + error, status_code=303
             )
+            provider_error = request.query_params.get("error")
+            code_present = bool(request.query_params.get("code"))
+            if attempt and (provider_error or not code_present):
+                logger.warning(
+                    "OAuth provider returned no usable authorization code "
+                    "(provider_error_present=%s code_present=%s)",
+                    bool(provider_error),
+                    code_present,
+                )
             try:
-                if (
-                    attempt
-                    and request.query_params.get("code")
-                    and not request.query_params.get("error")
-                ):
+                if attempt and code_present and not provider_error:
                     user = self.google.identity(
                         request.query_params["code"], attempt.verifier, attempt.nonce
                     )
@@ -110,8 +132,9 @@ class AuthService:
                         response = RedirectResponse(
                             self.config.public_url + "/login?error=access_denied", status_code=303
                         )
-            except Exception:
-                # OAuth errors can contain codes/tokens; never return or log exception text.
+            except Exception as exc:
+                # Exception text can contain OAuth codes/tokens; log only its class.
+                logger.warning("OAuth identity verification failed (%s)", type(exc).__name__)
                 pass
             self.delete_cookie(response, FLOW_COOKIE)
             return response

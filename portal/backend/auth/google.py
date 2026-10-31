@@ -1,5 +1,6 @@
 """Google authorization-code flow with PKCE and verified OIDC identity."""
 
+import logging
 import secrets
 from functools import partial
 from typing import Any
@@ -13,6 +14,7 @@ from portal.backend.models import UserIdentity
 
 AUTHORIZE_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 TOKEN_URL = "https://oauth2.googleapis.com/token"
+logger = logging.getLogger(__name__)
 
 
 class GoogleOAuth:
@@ -41,14 +43,42 @@ class GoogleOAuth:
         return str(url)
 
     def identity(self, code: str, verifier: str, nonce: str) -> UserIdentity:
-        with self.client() as client:
-            token = client.fetch_token(TOKEN_URL, code=code, code_verifier=verifier, timeout=10)
+        try:
+            with self.client() as client:
+                token = client.fetch_token(TOKEN_URL, code=code, code_verifier=verifier, timeout=10)
+        except Exception as exc:
+            logger.warning(
+                "Google token exchange failed (%s.%s)",
+                type(exc).__module__,
+                type(exc).__name__,
+            )
+            raise
         # google-auth validates signature, issuer, audience, issued-at and expiry.
-        claims = verify_oauth2_token(  # type: ignore[no-untyped-call]
-            token["id_token"],
-            partial(GoogleRequest(), timeout=10),
-            audience=self.config.google_client_id,
-        )
+        try:
+            claims = verify_oauth2_token(  # type: ignore[no-untyped-call]
+                token["id_token"],
+                partial(GoogleRequest(), timeout=10),
+                audience=self.config.google_client_id,
+                clock_skew_in_seconds=300,
+            )
+        except Exception as exc:
+            message = str(exc).casefold()
+            reason = "validation_rejected"
+            if "wrong audience" in message:
+                reason = "audience_mismatch"
+            elif "used too early" in message:
+                reason = "token_issued_in_future"
+            elif "token expired" in message:
+                reason = "token_expired"
+            elif "signature" in message:
+                reason = "signature_rejected"
+            logger.warning(
+                "Google ID token verification failed (%s.%s, reason=%s)",
+                type(exc).__module__,
+                type(exc).__name__,
+                reason,
+            )
+            raise
         if not isinstance(claims.get("nonce"), str) or not secrets.compare_digest(
             claims["nonce"], nonce
         ):

@@ -36,7 +36,7 @@ class SettingDescriptor(BaseModel):
 class LanguageCapability(BaseModel):
     mode: Literal["free_text"] = "free_text"
     suggestions: list[str]
-    description: str = "Core accepts a language name; suggestions are not an exhaustive list."
+    description: str = "Core nhận tên ngôn ngữ dạng văn bản; danh sách gợi ý không đầy đủ."
 
 
 class RuntimeCapabilities(BaseModel):
@@ -67,6 +67,7 @@ class UserIdentity(BaseModel):
     subject: str
     email: str
     name: str
+    role: Literal["user", "admin"] = "user"
 
 
 class AuthStatus(BaseModel):

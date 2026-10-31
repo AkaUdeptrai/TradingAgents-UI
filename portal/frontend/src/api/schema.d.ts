@@ -211,7 +211,7 @@ export interface components {
         LanguageCapability: {
             /**
              * Description
-             * @default Core accepts a language name; suggestions are not an exhaustive list.
+             * @default Core nhận tên ngôn ngữ dạng văn bản; danh sách gợi ý không đầy đủ.
              */
             description: string;
             /**
@@ -300,6 +300,12 @@ export interface components {
             email: string;
             /** Name */
             name: string;
+            /**
+             * Role
+             * @default user
+             * @enum {string}
+             */
+            role: "user" | "admin";
             /** Subject */
             subject: string;
         };

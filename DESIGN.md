@@ -35,8 +35,8 @@ components:
 The visual reference is a quiet research desk: forest-green navigation, white work
 surfaces and clear status text. This is a product interface for people using the
 existing TradingAgents runtime, not a trading terminal or marketing page.
-English is the existing UI language; conversation language does not change the
-product locale. No Japan-market or other jurisdiction-specific workflow is assumed.
+The Portal interface is localized in Vietnamese. No Japan-market or other
+jurisdiction-specific workflow is assumed.
 User decisions on 2026-10-30: Google sign-in, explicitly allowed emails only,
 allowlist initially empty. No public registration or password form.
 

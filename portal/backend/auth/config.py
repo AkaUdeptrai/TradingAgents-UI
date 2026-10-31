@@ -10,6 +10,7 @@ class AuthConfig:
     google_client_id: str = ""
     google_client_secret: str = field(default="", repr=False)
     allowed_emails: tuple[str, ...] = ()
+    admin_emails: tuple[str, ...] = ()
     database: Path = field(
         default_factory=lambda: Path.home() / ".tradingagents/portal/auth.sqlite3"
     )
@@ -34,6 +35,10 @@ class AuthConfig:
             raise ValueError("PORTAL_SESSION_TTL_SECONDS must be between 300 and 86400")
         if any("@" not in email or "*" in email for email in self.allowed_emails):
             raise ValueError("PORTAL_ALLOWED_EMAILS must contain exact email addresses")
+        if any("@" not in email or "*" in email for email in self.admin_emails):
+            raise ValueError("PORTAL_ADMIN_EMAILS must contain exact email addresses")
+        if not set(self.admin_emails).issubset(self.allowed_emails):
+            raise ValueError("PORTAL_ADMIN_EMAILS must be a subset of PORTAL_ALLOWED_EMAILS")
 
     @property
     def configured(self) -> bool:
@@ -56,6 +61,11 @@ class AuthConfig:
             allowed_emails=tuple(
                 email.strip().casefold()
                 for email in os.getenv("PORTAL_ALLOWED_EMAILS", "").split(",")
+                if email.strip()
+            ),
+            admin_emails=tuple(
+                email.strip().casefold()
+                for email in os.getenv("PORTAL_ADMIN_EMAILS", "").split(",")
                 if email.strip()
             ),
             database=Path(

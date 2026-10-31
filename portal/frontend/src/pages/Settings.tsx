@@ -11,7 +11,7 @@ const loadSettings = async (signal: AbortSignal) => {
 };
 
 function showValue(value: unknown): string {
-  if (value === null) return 'Provider / core default';
+  if (value === null) return 'Mặc định của nhà cung cấp / Core';
   if (typeof value === 'object') return JSON.stringify(value, null, 2);
   return String(value);
 }
@@ -24,28 +24,28 @@ export function Settings() {
     <>
       <div className="page-heading">
         <div>
-          <p className="eyebrow">RUNTIME CONFIGURATION</p>
-          <h1>Settings</h1>
-          <p>Current core defaults with environment overrides applied.</p>
+          <p className="eyebrow">CẤU HÌNH MÔI TRƯỜNG CHẠY</p>
+          <h1>Cài đặt</h1>
+          <p>Giá trị mặc định của Core sau khi áp dụng cấu hình môi trường.</p>
         </div>
-        <span className="phase-tag">Read-only</span>
+        <span className="phase-tag">Chỉ đọc</span>
       </div>
       {loading && (
         <p role="status" className="notice">
-          Loading core configuration…
+          Đang tải cấu hình Core…
         </p>
       )}
       {error && <ErrorState retry={retry} />}
       {!loading && !error && values.length === 0 && (
-        <EmptyState title="No settings available">
-          The backend has not returned any public configuration.
+        <EmptyState title="Chưa có cài đặt">
+          Backend chưa trả về cấu hình công khai nào.
         </EmptyState>
       )}
       {values.length > 0 && (
         <section className="panel">
           <div className="panel-heading">
-            <h2>Core settings</h2>
-            <span className="muted">From TradingAgents</span>
+            <h2>Cài đặt Core</h2>
+            <span className="muted">Từ TradingAgents</span>
           </div>
           <dl className="settings-list">
             {values.map(([key, value]) => (
@@ -63,22 +63,22 @@ export function Settings() {
         <>
           <section className="panel">
             <div className="panel-heading">
-              <h2>Providers & models</h2>
-              <span className="muted">Core catalog · availability depends on provider setup</span>
+            <h2>Nhà cung cấp và model</h2>
+            <span className="muted">Danh mục Core · khả năng sử dụng tùy cấu hình nhà cung cấp</span>
             </div>
             {(capabilities.providers ?? []).length === 0 ? (
-              <p className="panel-padding">No providers returned.</p>
+              <p className="panel-padding">Không có nhà cung cấp nào được trả về.</p>
             ) : (
               <div className="provider-grid">
                 {capabilities.providers.map((provider) => (
                   <details key={provider.id}>
                     <summary>
                       {provider.id}
-                      <span>View models</span>
+                      <span>Xem model</span>
                     </summary>
                     {Object.entries(provider.models).map(([tier, models]) => (
                       <div className="model-tier" key={tier}>
-                        <h3>{tier} thinking</h3>
+                        <h3>Mức suy luận {tier}</h3>
                         <ul>
                           {models.map((model) => (
                             <li key={model.id}>
@@ -90,7 +90,7 @@ export function Settings() {
                       </div>
                     ))}
                     {provider.allows_custom_model && (
-                      <p className="muted">Custom model IDs supported by core.</p>
+                      <p className="muted">Core hỗ trợ ID model tùy chỉnh.</p>
                     )}
                   </details>
                 ))}
@@ -98,7 +98,7 @@ export function Settings() {
             )}
           </section>
           <section className="panel panel-padding">
-            <h2>Analysts</h2>
+            <h2>Chuyên viên phân tích</h2>
             <div className="chips">
               {(capabilities.analysts ?? []).map((analyst) => (
                 <span className="chip" key={analyst.id}>
@@ -106,10 +106,10 @@ export function Settings() {
                 </span>
               ))}
             </div>
-            <h2>Output language</h2>
+            <h2>Ngôn ngữ đầu ra</h2>
             <p>{capabilities.output_languages?.description}</p>
             <p className="muted">
-              Current suggestion: {capabilities.output_languages?.suggestions.join(', ') || 'None'}
+              Gợi ý hiện tại: {capabilities.output_languages?.suggestions.join(', ') || 'Không có'}
             </p>
           </section>
         </>

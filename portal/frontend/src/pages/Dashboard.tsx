@@ -6,21 +6,21 @@ import { EmptyState, ErrorState } from '../components/States';
 export function Dashboard() {
   const health = useResource(api.health);
   const version = useResource(api.version);
-  const backend = health.loading ? 'Checking…' : health.data ? 'Connected' : 'Disconnected';
+  const backend = health.loading ? 'Đang kiểm tra…' : health.data ? 'Đã kết nối' : 'Mất kết nối';
   const core = health.loading
-    ? 'Checking…'
+    ? 'Đang kiểm tra…'
     : health.data?.core === 'available'
-      ? 'Available'
-      : 'Unavailable';
+      ? 'Khả dụng'
+      : 'Không khả dụng';
   return (
     <>
       <div className="page-heading">
         <div>
-          <p className="eyebrow">WORKSPACE OVERVIEW</p>
+          <p className="eyebrow">TỔNG QUAN KHÔNG GIAN LÀM VIỆC</p>
           <h1>TradingAgents Portal</h1>
-          <p>Your workspace for multi-agent market research.</p>
+          <p>Không gian nghiên cứu thị trường với nhiều tác tử.</p>
         </div>
-        <span className="phase-tag">Foundation phase</span>
+        <span className="phase-tag">Giai đoạn nền tảng</span>
       </div>
       {(health.error || version.error) && (
         <ErrorState
@@ -30,14 +30,14 @@ export function Dashboard() {
           }}
         />
       )}
-      <section className="status-grid" aria-label="System status">
+      <section className="status-grid" aria-label="Trạng thái hệ thống">
         <article className="status-card">
           <span className="card-label">Backend</span>
           <strong>
             <i className={`dot ${health.data ? 'good' : 'pending'}`} />
             {backend}
           </strong>
-          <p>Portal API connection</p>
+          <p>Kết nối API của Portal</p>
         </article>
         <article className="status-card">
           <span className="card-label">TradingAgents Core</span>
@@ -45,28 +45,28 @@ export function Dashboard() {
             <i className={`dot ${health.data?.core === 'available' ? 'good' : 'pending'}`} />
             {core}
           </strong>
-          <p>Core runtime import</p>
+          <p>Nạp môi trường chạy Core</p>
         </article>
         <article className="status-card">
-          <span className="card-label">Version</span>
+          <span className="card-label">Phiên bản</span>
           <strong>
-            {version.loading ? 'Checking…' : version.data ? `v${version.data.core}` : 'Unavailable'}
+            {version.loading ? 'Đang kiểm tra…' : version.data ? `v${version.data.core}` : 'Không khả dụng'}
           </strong>
           <p>TradingAgents{version.data ? ` · Portal v${version.data.portal}` : ''}</p>
         </article>
       </section>
       <section className="panel">
         <div className="panel-heading">
-          <h2>Analysis workspace</h2>
-          <span className="muted">Getting started</span>
+            <h2>Khu vực phân tích</h2>
+            <span className="muted">Bắt đầu</span>
         </div>
-        <EmptyState title="Your research starts here">
-          Analysis execution and saved history are not connected in this phase. Explore the current
-          core configuration to get oriented.
+        <EmptyState title="Bắt đầu nghiên cứu tại đây">
+          Giai đoạn này chưa hỗ trợ chạy phân tích và lưu lịch sử. Bạn có thể xem cấu hình Core hiện
+          tại để làm quen.
         </EmptyState>
         <div className="panel-action">
           <Link className="button" to="/settings">
-            Explore settings <span aria-hidden="true">↗</span>
+            Xem cài đặt <span aria-hidden="true">↗</span>
           </Link>
         </div>
       </section>
@@ -75,8 +75,8 @@ export function Dashboard() {
           i
         </span>
         <p>
-          Connected to the existing TradingAgents runtime. Settings are read-only during
-          initialization.
+          Đã kết nối với môi trường chạy TradingAgents hiện có. Cài đặt chỉ có thể xem trong giai
+          đoạn khởi tạo.
         </p>
       </div>
     </>

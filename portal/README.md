@@ -134,6 +134,7 @@ core mechanism. Docker injects root `.env` and `portal/.env`; it does not mount
 | `PORTAL_PYTHON` | `python3` | Bootstrap script's interpreter when creating `.venv`. |
 | `PORTAL_GOOGLE_CLIENT_ID` / `PORTAL_GOOGLE_CLIENT_SECRET` | empty | Server-side Google OAuth credentials. |
 | `PORTAL_ALLOWED_EMAILS` | empty | Exact, comma-separated approved emails; empty denies everyone. |
+| `PORTAL_ADMIN_EMAILS` | empty | Exact administrator emails; each must also be allowlisted. |
 | `PORTAL_PUBLIC_URL` | context default | Exact browser origin; dev script defaults to 5173, backend/Docker to 8000. |
 | `PORTAL_AUTH_DB` | `~/.tradingagents/portal/auth.sqlite3` | Server-side session SQLite file. |
 | `PORTAL_SESSION_TTL_SECONDS` | `28800` | Fixed session lifetime, 300–86400 seconds. |
@@ -251,7 +252,7 @@ files, including empty responses, disconnected backend and unavailable core.
 
 - Define the analysis execution/job lifecycle through the adapter and reuse core execution.
 - Decide how to index existing reports and persist Portal jobs before adding a database.
-- Extend authorization with explicit roles before adding administrative writes.
+- Add admin-only endpoints before introducing administrative writes; this phase exposes no admin write actions.
 - Extend config schemas/validation from core; add optional SDK/provider readiness checks separately from health.
 - Reuse existing token-usage callbacks and reporting when execution is introduced.
 
