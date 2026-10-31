@@ -430,9 +430,9 @@ TradingAgents UI runs as one application: the web interface and its local Tradin
 runtime are bundled together. You do not need to deploy or configure a separate backend.
 Start it with `docker compose up --build` and open <http://127.0.0.1:8000>. For local
 development, use `./scripts/dev-tradingagents-ui.sh`. Setup details are in
-[`portal/README.md`](portal/README.md).
+[`tradingagents_ui/README.md`](tradingagents_ui/README.md).
 
-Workspace access requires [Google sign-in and an explicit email allowlist](portal/AUTH.md).
+Workspace access requires [Google sign-in and an explicit email allowlist](tradingagents_ui/AUTH.md).
 The initial allowlist is empty; configure OAuth credentials and approved emails to sign in.
 Analysis execution and history browsing are not yet available in the UI. Existing CLI
 commands, including `docker compose run --rm tradingagents`, remain available.

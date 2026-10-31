@@ -40,8 +40,8 @@ jurisdiction-specific workflow is assumed.
 User decisions on 2026-10-30: Google sign-in, explicitly allowed emails only,
 allowlist initially empty. No public registration or password form.
 
-Runtime CSS in `portal/frontend/src/styles.css` is canonical. This file mirrors
-its shared values. The added auth surface consumes `--portal-*` properties rather
+Runtime CSS in `tradingagents_ui/web/src/styles.css` is canonical. This file mirrors
+its shared values. The auth surface consumes `--tradingagents-ui-*` properties rather
 than defining a second visual system. Existing Dashboard and Settings are the
 sibling references; preserve their navigation and layout.
 
@@ -80,15 +80,15 @@ Google provider identification must remain clearly labeled in text.
 
 | Capability | Canonical owner | Source of truth | Allowed variants | Verification |
 | --- | --- | --- | --- | --- |
-| Auth | `components/AuthGate.tsx` | backend auth routes + user decisions | checking, signed out, signed in, expired | auth tests |
+| Auth | `components/AuthGate.tsx` | internal auth routes + user decisions | checking, signed out, signed in, expired | auth tests |
 | Feedback | `components/States.tsx` | existing retry pattern | loading, error, empty | component tests |
 | Navigation | `App.tsx` / React Router | registered routes | protected, login | route tests |
 | Scrollbar | `styles.css` | runtime tokens | global, forced-colors | static audit + browser |
 
 Buttons are semantic buttons/links with visible focus. Logout is reversible and
 needs no confirmation; disable while in flight and retain the session on network
-failure. A 401 clears protected content and returns to sign-in. The backend
-validates permission on every protected request. Loading and API failures have
+failure. A 401 clears protected content and returns to sign-in. The application
+validates permission on every protected request. Loading and request failures have
 status/alert roles and retry actions. Do not put secrets into browser storage.
 
 Only opacity/color transitions are needed; reduced-motion disables transitions.

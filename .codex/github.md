@@ -20,19 +20,19 @@
 Run checks relevant to the changes; reuse successful checks when code has not
 changed. Report failures and skipped checks accurately.
 
-For Portal changes, with the development dependencies installed:
+For TradingAgents UI changes, with the development dependencies installed:
 
 ```sh
-.venv/bin/pytest -q portal/backend/tests
-.venv/bin/ruff check portal
-.venv/bin/ruff format --check portal
+.venv/bin/pytest -q tradingagents_ui/runtime/tests
+.venv/bin/ruff check tradingagents_ui
+.venv/bin/ruff format --check tradingagents_ui
 .venv/bin/mypy
-.venv/bin/python -m portal.scripts.export_openapi --check
-npm --prefix portal/frontend run api:check
-npm --prefix portal/frontend run lint
-npm --prefix portal/frontend run format:check
-npm --prefix portal/frontend test
-npm --prefix portal/frontend run build
+.venv/bin/python -m tradingagents_ui.scripts.export_openapi --check
+npm --prefix tradingagents_ui/web run api:check
+npm --prefix tradingagents_ui/web run lint
+npm --prefix tradingagents_ui/web run format:check
+npm --prefix tradingagents_ui/web test
+npm --prefix tradingagents_ui/web run build
 ```
 
 Run core tests and a CLI smoke check when integration or shared packaging changes.
@@ -50,7 +50,7 @@ LLM, or paid provider calls merely to satisfy tests; document untested live flow
 - PR titles and descriptions must describe the final change for a new reviewer:
   the problem, resulting behavior, relevant tests, setup requirements, and known
   limitations. Distinguish local results from remote CI results.
-- For this Portal, state that Google credentials and an explicit email allowlist
+- For this TradingAgents UI, state that Google credentials and an explicit email allowlist
   are required; an empty allowlist grants access to nobody. Never include secrets.
 - Verify the resulting PR's base/head and URL. Attach it to the Codex task when
   the artifact attachment tool is available. Report the link and branch to the user.

@@ -222,7 +222,7 @@ __marimo__/
 .env.enterprise
 reports/
 
-# Portal dependencies, generated build output and local environment overrides
+# UI dependencies, generated build output and local environment overrides
 node_modules/
 .env.*
 !.env.example

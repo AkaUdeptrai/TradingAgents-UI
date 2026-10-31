@@ -3,10 +3,10 @@
 Read and follow [.codex/github.md](.codex/github.md) when working with branches,
 commits, pushes, pull requests, or GitHub reviews in this repository.
 
-Keep Portal integration behind `portal/backend/services/tradingagents_adapter.py`.
+Keep core integration behind `tradingagents_ui/runtime/services/tradingagents_adapter.py`.
 Preserve existing core and CLI behavior unless the task explicitly changes it.
-For Portal setup and checks, see `portal/README.md`; for authentication, see
-`portal/AUTH.md`. Read `DESIGN.md` before modifying the Portal UI.
+For application setup and checks, see `tradingagents_ui/README.md`; for authentication,
+see `tradingagents_ui/AUTH.md`. Read `DESIGN.md` before changing the UI.
 
 ## Review guidelines
 

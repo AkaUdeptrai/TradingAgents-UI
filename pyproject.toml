@@ -42,18 +42,6 @@ ui-dev = [
     "httpx>=0.28,<1",
     "mypy>=1.15,<2",
 ]
-# Compatibility extras for existing Portal installation instructions.
-portal = [
-    "Authlib>=1.6.5,<2",
-    "google-auth>=2.40,<3",
-    "fastapi>=0.115,<1",
-    "uvicorn>=0.34,<1",
-    "pydantic>=2.7.4,<3",
-]
-portal-dev = [
-    "httpx>=0.28,<1",
-    "mypy>=1.15,<2",
-]
 dev = [
     "ruff>=0.16",
     "pytest>=8.0",
@@ -67,15 +55,14 @@ bedrock = [
 
 [project.scripts]
 tradingagents = "cli.main:app"
-tradingagents-portal = "portal.backend.__main__:main"
-tradingagents-ui = "portal.backend.__main__:main"
+tradingagents-ui = "tradingagents_ui.runtime.__main__:main"
 
 [tool.setuptools.dynamic]
 version = {attr = "tradingagents.__version__"}
 
 [tool.setuptools.packages.find]
-include = ["tradingagents*", "cli*", "portal.backend*", "portal"]
-exclude = ["portal.backend.tests*"]
+include = ["tradingagents*", "cli*", "tradingagents_ui.runtime*", "tradingagents_ui"]
+exclude = ["tradingagents_ui.runtime.tests*"]
 
 [tool.setuptools.package-data]
 cli = ["static/*"]
@@ -116,8 +103,8 @@ combine-as-imports = true
 
 [tool.mypy]
 python_version = "3.11"
-files = ["portal/backend"]
-exclude = ["portal/backend/tests"]
+files = ["tradingagents_ui/runtime"]
+exclude = ["tradingagents_ui/runtime/tests"]
 strict = true
 follow_imports = "silent"
 

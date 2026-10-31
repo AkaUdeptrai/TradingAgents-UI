@@ -2,21 +2,24 @@ services:
   tradingagents-ui:
     build:
       context: .
-      dockerfile: portal/Dockerfile
+      dockerfile: tradingagents_ui/Dockerfile
     env_file:
       - path: .env
         required: false
+      - path: tradingagents_ui/.env
+        required: false
+      # Accept the old local env file during upgrades.
       - path: portal/.env
         required: false
     environment:
-      PORTAL_HOST: 0.0.0.0
-      PORTAL_PORT: 8000
-      PORTAL_STATIC_DIR: /app/portal/frontend/dist
-      PORTAL_AUTH_DB: /home/appuser/.tradingagents/portal/auth.sqlite3
+      TRADINGAGENTS_UI_HOST: 0.0.0.0
+      TRADINGAGENTS_UI_PORT: 8000
+      TRADINGAGENTS_UI_STATIC_DIR: /app/tradingagents_ui/web/dist
+      TRADINGAGENTS_UI_AUTH_DB: /home/appuser/.tradingagents/portal/auth.sqlite3
     volumes:
       - portal_auth:/home/appuser/.tradingagents/portal
     ports:
-      - "127.0.0.1:${PORTAL_PORT:-8000}:8000"
+      - "127.0.0.1:${TRADINGAGENTS_UI_PORT:-8000}:8000"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=10)"]
       interval: 30s
