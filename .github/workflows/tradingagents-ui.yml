@@ -17,17 +17,17 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: tradingagents_ui/web/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
       - run: pip install -e '.[dev,ui,ui-dev]'
-      - run: npm --prefix tradingagents_ui/web ci
-      - run: pytest -q tradingagents_ui/runtime/tests
-      - run: ruff check tradingagents_ui && ruff format --check tradingagents_ui && mypy
-      - run: python -m tradingagents_ui.scripts.export_openapi --check
-      - run: npm --prefix tradingagents_ui/web run api:check
-      - run: npm --prefix tradingagents_ui/web run lint
-      - run: npm --prefix tradingagents_ui/web run format:check
-      - run: npm --prefix tradingagents_ui/web run test
-      - run: npm --prefix tradingagents_ui/web run build
+      - run: npm --prefix frontend ci
+      - run: pytest -q backend/tests
+      - run: ruff check backend && ruff format --check backend && mypy
+      - run: python -m backend.export_openapi --check
+      - run: npm --prefix frontend run api:check
+      - run: npm --prefix frontend run lint
+      - run: npm --prefix frontend run format:check
+      - run: npm --prefix frontend run test
+      - run: npm --prefix frontend run build
       - run: docker compose build tradingagents-ui tradingagents
       - name: Container smoke
         run: |

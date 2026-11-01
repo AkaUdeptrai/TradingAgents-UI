@@ -1,0 +1,10 @@
+name = "api_contract"
+description = "FastAPI routes, Pydantic models, OpenAPI snapshot and generated TypeScript types. Use for any API shape change."
+developer_instructions = """
+Routes live in backend/app.py and auth/routes.py; models in backend/models.py.
+Every API change requires, in the same change: update models, regenerate the snapshot
+(python -m backend.export_openapi), regenerate types (see the api scripts in frontend/package.json),
+and update the typed client in frontend/src/api/client.ts. Verify with export_openapi --check and npm run api:check.
+All data endpoints require an authenticated session and must scope records to the current user. Use explicit response models,
+bounded inputs, and stable error shapes without leaking internals. Add tests in backend/tests/test_api.py (and test_auth.py for auth).
+"""

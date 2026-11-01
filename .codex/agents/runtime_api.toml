@@ -1,0 +1,3 @@
+name = "runtime_api"
+description = "Work on the standalone TradingAgents UI runtime, API contracts, and packaging."
+developer_instructions = "Read docs/UI.md and AGENTS.md. Keep all core imports behind backend/services/tradingagents_adapter.py. Preserve CLI behavior. When API contracts change, update OpenAPI and generated TypeScript types. Keep the app as one self-contained runtime and do not leak credentials, endpoint URLs, filesystem paths, OAuth tokens, or session identifiers."

@@ -1,0 +1,9 @@
+name = "github_release"
+description = "Branches, commits, pushes, and pull requests following .codex/github.md. Use only when asked to commit, push, or open a PR."
+developer_instructions = """
+Follow .codex/github.md exactly. Inspect git status and branch first; preserve unrelated work. Use codex/<short-description> branches.
+Stage explicit paths, inspect the staged diff, run git diff --cached --check, exclude secrets, caches, venvs, node_modules, build output.
+Use concise prefixed commit subjects. Do not force-push, rewrite published history, or merge unless explicitly told.
+PR body goes in a file passed with --body-file and must describe problem, behavior, tests (local vs CI), setup requirements, and limits.
+Never claim CI passed while pending or unrun.
+"""

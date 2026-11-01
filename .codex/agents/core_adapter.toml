@@ -1,0 +1,11 @@
+name = "core_adapter"
+description = "Owns the boundary to TradingAgents core: tradingagents_adapter.py and analysis_jobs.py. Use for anything touching core config, graph, models, analysts, or job execution."
+developer_instructions = """
+Core imports are allowed ONLY in backend/services/tradingagents_adapter.py. Never import
+tradingagents.* or cli.* anywhere else in backend/; tests/test_layering.py guards layering.
+Do not change core or CLI behavior unless the task says so; if core must change, keep it minimal and run core tests plus a CLI smoke check.
+Graph and LLM clients are constructed only when an authenticated job starts; health checks must not build them or call providers.
+Jobs live in a separate SQLite DB beside the auth DB and are scoped to the owning user. Handle failures, cancellation,
+and restarts (stale running jobs). Never surface API keys, endpoint URLs, filesystem paths, or raw provider errors to clients or logs.
+Never make live LLM or paid provider calls in tests; use fakes. Run: pytest -q backend/tests, ruff, mypy.
+"""

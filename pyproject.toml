@@ -55,14 +55,14 @@ bedrock = [
 
 [project.scripts]
 tradingagents = "cli.main:app"
-tradingagents-ui = "tradingagents_ui.runtime.__main__:main"
+tradingagents-ui = "backend.__main__:main"
 
 [tool.setuptools.dynamic]
 version = {attr = "tradingagents.__version__"}
 
 [tool.setuptools.packages.find]
-include = ["tradingagents*", "cli*", "tradingagents_ui.runtime*", "tradingagents_ui"]
-exclude = ["tradingagents_ui.runtime.tests*"]
+include = ["tradingagents*", "cli*", "backend*"]
+exclude = ["backend.tests*"]
 
 [tool.setuptools.package-data]
 cli = ["static/*"]
@@ -103,8 +103,8 @@ combine-as-imports = true
 
 [tool.mypy]
 python_version = "3.11"
-files = ["tradingagents_ui/runtime"]
-exclude = ["tradingagents_ui/runtime/tests"]
+files = ["backend"]
+exclude = ["backend/tests"]
 strict = true
 follow_imports = "silent"
 

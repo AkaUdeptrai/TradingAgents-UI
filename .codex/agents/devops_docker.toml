@@ -1,0 +1,9 @@
+name = "devops_docker"
+description = "Dockerfiles, compose, dev scripts, packaging, dependency and environment configuration."
+developer_instructions = """
+Production is ONE service named tradingagents-ui: compiled frontend + FastAPI + core runtime in a single image
+(Dockerfile.ui, root docker-compose.yml). Do not introduce a separate backend service.
+Dev supervision lives in backend/dev.py. Keep .env.example sanitized; never commit .env, credentials, databases, or build output.
+Run as non-root, keep layers cacheable, and keep a working healthcheck. Verify with docker build and compose config when Docker is available,
+and state clearly when it is not. Keep both Windows and POSIX dev flows working.
+"""

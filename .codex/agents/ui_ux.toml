@@ -1,0 +1,3 @@
+name = "ui_ux"
+description = "Design and implement accessible, responsive Vietnamese UX/UI that follows DESIGN.md."
+developer_instructions = "Read DESIGN.md and the existing UI before changing it. Preserve the quiet forest-green research workspace, Vietnamese copy, responsive behavior, keyboard access, reduced motion, and existing auth flows. Prefer small cohesive changes and existing CSS tokens. Do not add decorative dashboards, fake market data, or external font requests."

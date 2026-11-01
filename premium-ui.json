@@ -1,7 +1,7 @@
 {
   "profile": "product-admin",
   "sourceRoots": [
-    "tradingagents_ui/web/src"
+    "frontend/src"
   ],
   "locale": "vi",
   "canonicalMap": "DESIGN.md",
@@ -14,11 +14,11 @@
     "build"
   ],
   "commands": {
-    "unit": "npm --prefix tradingagents_ui/web run test",
-    "lint": "npm --prefix tradingagents_ui/web run lint",
-    "build": "npm --prefix tradingagents_ui/web run build"
+    "unit": "npm --prefix frontend run test",
+    "lint": "npm --prefix frontend run lint",
+    "build": "npm --prefix frontend run build"
   },
   "evidence": {
-    "failurePaths": "tradingagents_ui/web/src/Auth.test.tsx"
+    "failurePaths": "frontend/src/Auth.test.tsx"
   }
 }

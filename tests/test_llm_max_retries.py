@@ -4,6 +4,7 @@ A single transient 429 burst used to kill an otherwise-healthy multi-agent run
 because each provider SDK's max_retries (default 2) was not exposed. This adds an
 opt-in llm_max_retries knob forwarded to every provider chat client.
 """
+
 from __future__ import annotations
 
 import pytest
@@ -70,7 +71,26 @@ def test_invalid_config_value_fails_loudly():
         build_llm_kwargs({"llm_provider": "openai", "llm_max_retries": -1})
 
 
+@pytest.mark.unit
+def test_optional_request_timeout_is_forwarded_and_positive():
+    kwargs = build_llm_kwargs({"llm_provider": "openai", "llm_timeout_seconds": 120})
+    assert kwargs["timeout"] == 120
+
+
+@pytest.mark.unit
+def test_request_timeout_is_not_added_when_unset():
+    kwargs = build_llm_kwargs({"llm_provider": "openai"})
+    assert "timeout" not in kwargs
+
+
+@pytest.mark.unit
+def test_request_timeout_must_be_positive():
+    with pytest.raises(ValueError, match="must be > 0"):
+        build_llm_kwargs({"llm_provider": "openai", "llm_timeout_seconds": 0})
+
+
 # --- env overlay -----------------------------------------------------------
+
 
 def _config_with_env(monkeypatch, **overrides):
     """The defaults as the environment given here would set them."""

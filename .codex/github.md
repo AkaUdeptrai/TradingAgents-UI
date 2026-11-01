@@ -23,16 +23,16 @@ changed. Report failures and skipped checks accurately.
 For TradingAgents UI changes, with the development dependencies installed:
 
 ```sh
-.venv/bin/pytest -q tradingagents_ui/runtime/tests
-.venv/bin/ruff check tradingagents_ui
-.venv/bin/ruff format --check tradingagents_ui
+.venv/bin/pytest -q backend/tests
+.venv/bin/ruff check backend
+.venv/bin/ruff format --check backend
 .venv/bin/mypy
-.venv/bin/python -m tradingagents_ui.scripts.export_openapi --check
-npm --prefix tradingagents_ui/web run api:check
-npm --prefix tradingagents_ui/web run lint
-npm --prefix tradingagents_ui/web run format:check
-npm --prefix tradingagents_ui/web test
-npm --prefix tradingagents_ui/web run build
+.venv/bin/python -m backend.export_openapi --check
+npm --prefix frontend run api:check
+npm --prefix frontend run lint
+npm --prefix frontend run format:check
+npm --prefix frontend test
+npm --prefix frontend run build
 ```
 
 Run core tests and a CLI smoke check when integration or shared packaging changes.

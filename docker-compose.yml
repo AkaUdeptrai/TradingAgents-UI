@@ -2,22 +2,17 @@ services:
   tradingagents-ui:
     build:
       context: .
-      dockerfile: tradingagents_ui/Dockerfile
+      dockerfile: Dockerfile.ui
     env_file:
       - path: .env
-        required: false
-      - path: tradingagents_ui/.env
-        required: false
-      # Accept the old local env file during upgrades.
-      - path: portal/.env
         required: false
     environment:
       TRADINGAGENTS_UI_HOST: 0.0.0.0
       TRADINGAGENTS_UI_PORT: 8000
-      TRADINGAGENTS_UI_STATIC_DIR: /app/tradingagents_ui/web/dist
-      TRADINGAGENTS_UI_AUTH_DB: /home/appuser/.tradingagents/portal/auth.sqlite3
+      TRADINGAGENTS_UI_STATIC_DIR: /app/frontend/dist
+      TRADINGAGENTS_UI_AUTH_DB: /home/appuser/.tradingagents/ui/auth.sqlite3
     volumes:
-      - portal_auth:/home/appuser/.tradingagents/portal
+      - ui_data:/home/appuser/.tradingagents/ui
     ports:
       - "127.0.0.1:${TRADINGAGENTS_UI_PORT:-8000}:8000"
     healthcheck:
@@ -62,6 +57,6 @@ services:
       - ollama
 
 volumes:
-  portal_auth:
+  ui_data:
   tradingagents_data:
   ollama_data:

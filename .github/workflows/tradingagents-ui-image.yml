@@ -41,7 +41,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          file: tradingagents_ui/Dockerfile
+          file: Dockerfile.ui
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

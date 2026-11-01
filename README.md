@@ -29,6 +29,31 @@
 
 # TradingAgents: Multi-Agents LLM Financial Trading Framework
 
+## Repository layout
+
+This repository contains the upstream TradingAgents framework plus the TradingAgents UI
+web app that reuses it. Each top-level folder has one job:
+
+```text
+TradingAgents-UI/
+├─ tradingagents/   ← core engine (upstream): graph, agents, data, LLM clients
+├─ cli/             ← upstream command-line app
+├─ tests/           ← core + CLI tests
+├─ backend/         ← web app API (FastAPI): sign-in, jobs, scans, settings, openapi.json
+│                     services/tradingagents_adapter.py is the only module importing the core
+├─ frontend/        ← web app UI (React + TypeScript + Vite)
+├─ scripts/         ← setup.ps1 / setup.sh: first-run install + start
+├─ docs/            ← UI.md (web app guide), AUTH.md (Google sign-in)
+├─ Dockerfile.ui    ← web app image   ·   Dockerfile ← upstream CLI image
+├─ docker-compose.yml
+└─ .env             ← ONE config file for core and web app (copy .env.example)
+```
+
+Keep `tradingagents/` and `cli/` at the repository root: the package imports and
+the existing CLI depend on that layout. The UI is another client of the core,
+not a second implementation of it. See [`docs/UI.md`](docs/UI.md)
+for UI setup and its current capabilities.
+
 ## News
 
 <!-- news:start -->
@@ -429,10 +454,10 @@ Please reference our work if you find *TradingAgents* provides you with some hel
 TradingAgents UI runs as one application: the web interface and its local TradingAgents
 runtime are bundled together. You do not need to deploy or configure a separate backend.
 Start it with `docker compose up --build` and open <http://127.0.0.1:8000>. For local
-development, use `./scripts/dev-tradingagents-ui.sh`. Setup details are in
-[`tradingagents_ui/README.md`](tradingagents_ui/README.md).
+development, use `scripts/setup.sh`. Setup details are in
+[`docs/UI.md`](docs/UI.md).
 
-Workspace access requires [Google sign-in and an explicit email allowlist](tradingagents_ui/AUTH.md).
+Workspace access requires [Google sign-in and an explicit email allowlist](docs/AUTH.md).
 The initial allowlist is empty; configure OAuth credentials and approved emails to sign in.
 Analysis execution and history browsing are not yet available in the UI. Existing CLI
 commands, including `docker compose run --rm tradingagents`, remain available.

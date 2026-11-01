@@ -1,0 +1,58 @@
+:root {
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 0.9375rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.75rem;
+  --dur-micro: 120ms;
+  --dur-short: 200ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Neutral workspace with one forest-green accent. */
+  --color-paper: #f7f8f7;
+  --color-paper-2: #f0f3f1;
+  --color-paper-3: #e6ebe8;
+  --color-surface: #ffffff;
+  --color-ink: #17251f;
+  --color-ink-2: #34453d;
+  --color-muted: #5f6f67;
+  --color-rule: #e3e8e5;
+  --color-rule-strong: #cfd7d2;
+  --color-accent: #1f5c43;
+  --color-accent-hover: #184a36;
+  --color-accent-soft: #e8f2ec;
+  --color-accent-ink: #ffffff;
+  --color-focus: #3a9c78;
+  --color-success: #1f6b4a;
+  --color-success-surface: #e8f4ed;
+  --color-warning: #7a5a1e;
+  --color-warning-surface: #fdf6e7;
+  --color-warning-rule: #ecdcb8;
+  --color-error: #9b3030;
+  --color-error-surface: #fdf1ef;
+  --color-error-rule: #f0d0ca;
+  --color-info: #2c5d86;
+  --color-info-surface: #edf4fa;
+
+  --font-body: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+  --radius-control: 6px;
+  --radius-panel: 10px;
+  --radius-pill: 999px;
+  --shadow-panel: 0 1px 2px rgb(23 37 31 / 4%);
+  --container: 1120px;
+  --sidebar-width: 232px;
+  --scrollbar-thumb: #b6c1bb;
+  --scrollbar-track: transparent;
+}
